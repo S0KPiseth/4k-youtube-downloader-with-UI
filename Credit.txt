@@ -1,0 +1,21 @@
+Credits:
+
+This application was developed using the following libraries and tools:
+- 'customtkinter' and 'tkinter' for GUI framework and custom themed tkinter widget.
+- 'yt-dlp' for YouTube video downloading.
+- 'threading' for background tasks
+- 'vlc' for streaming preview video.
+- 'PIL' (Python Imaging Library) for image handling.
+- 'os' 
+- 'time' 
+
+Icons and images used in this application:
+- "play-button_724963.png" at https://www.freepik.com/icon/play-button_724963
+- "pause _icon.png" at https://www.freepik.com/icon/parallel-lines_301#fromView=search&page=1&position=28&uuid=19c5823a-67e4-4ff2-a9ac-c915a018f6a3
+- "search-interface-symbol_54481.png" at https://www.freepik.com/icon/search-interface-symbol_54481#fromView=search&page=1&position=0&uuid=9a1270fb-163a-4a45-bc94-1313ecb2b7cb
+- "download_icon.png" at https://www.freepik.com/icon/download-arrow_62055#fromView=search&page=1&position=65&uuid=a2832a24-146f-4591-a321-7d4ccf5de735
+
+Contributors:
+- Piseth SOK
+
+Special thanks to the developers of the libraries and tools used in this project.
