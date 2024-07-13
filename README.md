@@ -22,10 +22,16 @@ To install and set up the project, follow these steps:
     ```bash
     pip install -r requirements.txt
     ```
+4. Install ffmpeg:
+   - **Linux**: Install via package manager (e.g., `apt-get install ffmpeg` on Debian-based systems).
+   - **macOS**: Install using Homebrew (`brew install ffmpeg`).
+   - **Windows**: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH.
 
 ## Usage
 
 To use this project, run the following command:
 
 ```bash
-python main.py
+python UI.py
+```
+Or run UI.py file directly from your IDE
