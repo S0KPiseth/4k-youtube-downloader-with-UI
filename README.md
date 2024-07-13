@@ -34,27 +34,22 @@ After clicking the download button, it will pop up a new frame on the home tab t
 
 To install and set up the project, follow these steps:
 
-1. Clone the repository:
+1. Install ffmpeg:
+   - **Linux**: Install via package manager (e.g., `apt-get install ffmpeg` on Debian-based systems).
+   - **macOS**: Install using Homebrew (`brew install ffmpeg`).
+   - **Windows**: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH.
+
+2. Clone the repository:
     ```bash
     git clone https://github.com/S0KPiseth/4k-youtube-downloader-with-UI.git
     cd 4k-youtube-downloader-with-UI
     ```
 
-2. Set up a virtual environment:
+3. Install the requirement module:
+   run the following command
     ```bash
-    python3 -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    pip install python-vlc customtkinter Pillow yt-dlp
     ```
-
-3. Install the required dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-4. Install ffmpeg:
-   - **Linux**: Install via package manager (e.g., `apt-get install ffmpeg` on Debian-based systems).
-   - **macOS**: Install using Homebrew (`brew install ffmpeg`).
-   - **Windows**: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH.
-
 ## Usage
 
 After finishing the installation step, to use this application, run the following command:
