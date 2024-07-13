@@ -15,7 +15,7 @@ Icons and images used in this application:
 - "search-interface-symbol_54481.png" at https://www.freepik.com/icon/search-interface-symbol_54481#fromView=search&page=1&position=0&uuid=9a1270fb-163a-4a45-bc94-1313ecb2b7cb
 - "download_icon.png" at https://www.freepik.com/icon/download-arrow_62055#fromView=search&page=1&position=65&uuid=a2832a24-146f-4591-a321-7d4ccf5de735
 
-Contributors:
+Developers:
 - Piseth SOK
 
 Special thanks to the developers of the libraries and tools used in this project.
