@@ -57,8 +57,7 @@ To install and set up the project, follow these steps:
 
 ## Usage
 
-To use this project, run the following command:
-
+After finishing the installation step, to use this application, run the following command:
 ```bash
 python UI.py
 ```
