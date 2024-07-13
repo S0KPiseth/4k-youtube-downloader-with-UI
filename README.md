@@ -3,10 +3,9 @@
 By using this customtkinter GUI application, you can download YouTube videos up to 4K resolution.
 
 
-![Screenshot of the Home tab with light theme](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/Home_tab_light.png)
+(https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/Home_tab_light.png)
 
-
-![Screenshot of the Home tab with dark theme](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/Home_tab_dark.png)
+(https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/Home_tab_dark.png)
 
 
 
@@ -15,7 +14,7 @@ You will also be able to pause and play the video, as well as download it in any
 
 
 
-![Screenshot of the preview window](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/Video_preview.png)](https://www.youtube.com/watch?v=CY5WLrSYPzo)
+(https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/Video_preview.png)](https://www.youtube.com/watch?v=CY5WLrSYPzo)
 
 
 After clicking the download button, it will pop up a new frame on the home tab to show the process of the download, and you can also cancel the download by clicking the "X" button.
