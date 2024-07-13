@@ -45,8 +45,8 @@ To install and set up the project, follow these steps:
     cd 4k-youtube-downloader-with-UI
     ```
 
-3. Install the requirement module:
-   run the following command
+3. Run the following command to install the required library:
+   
     ```bash
     pip install python-vlc customtkinter Pillow yt-dlp
     ```
