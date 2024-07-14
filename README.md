@@ -1,6 +1,3 @@
-<a href="https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/Home_tab_light.png">
-    <img src="https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/Home_tab_light.png" alt="Home Tab Light" width="600" />
-</a>
 
 # 4K YouTube Downloader with UI
 
