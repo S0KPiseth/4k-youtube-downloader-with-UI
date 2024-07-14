@@ -1,12 +1,11 @@
 from functions import *
 
+
 class Window():
     def __init__(self, frame):
         customtkinter.set_appearance_mode("light")
 
         self.frame = frame
-
-        
 
         font = ("Roboto mono", 15)
         self.notebook = customtkinter.CTkTabview(
@@ -17,17 +16,15 @@ class Window():
             segmented_button_selected_hover_color=("#EBEBEB", "#242424"),
             segmented_button_unselected_color=("#EBEBEB", "#242424"),
             segmented_button_unselected_hover_color=("#EBEBEB", "#242424"),
-            
+
         )
 
         self.notebook.pack(fill="both", expand=True)
         self.notebook._segmented_button.configure(font=font)
-        
-        
-        
+
         self.notebook.add("Home")
         self.tab = self.notebook.tab("Home")
-       
+
         self.frame.call(
             "source",
             "C:\\Users\\User\\Desktop\\deskstop icon\\Piseth-SoK\\01 Project\\COSC 121\\4_Assignments\\pdcreator\\Azure\\azure.tcl",
@@ -54,19 +51,19 @@ class Window():
             image=self.search_icon,
             width=50,
             fg_color=("#EBEBEB", "#242424"),
-            hover_color=("white","#383838"),
+            hover_color=("white", "#383838"),
             command=lambda: search(self),
         )
         self.button.place(relx=0.79, rely=0.7, anchor="w")
 
         self.entry.bind("<Button-1>", lambda event: type(self))
-        
+
         self.entry.bind("<Return>", lambda event: search(self))
-        
+
         customtkinter.CTkLabel(self.tab,
                                text=None,
-                               image=customtkinter.CTkImage(PIL.Image.open("Icons/sticker1.png"), size = (350,200))).place(relx=1, rely=0.35, anchor="e")
-        
+                               image=customtkinter.CTkImage(PIL.Image.open("Icons/sticker1.png"), size=(350, 200))).place(relx=1, rely=0.35, anchor="e")
+
 
 class setting(Window):
     def __init__(self, Frame):
@@ -86,14 +83,11 @@ class setting(Window):
         self.t.set(r"C:\Users\User\Downloads")
         self.animate.set("Enable")
 
-
         self.notebook.add("Setting")
         self.setting = self.notebook.tab("Setting")
 
-        
-
         self.setting.grid_columnconfigure((2, 4), weight=1)
-       
+
         # theme
         customtkinter.CTkLabel(
             self.setting, text="Set theme: ", font=("Roboto mono", 15, "bold"), anchor=W
@@ -116,7 +110,7 @@ class setting(Window):
         ).grid(row=4, column=0, padx=10, pady=5, sticky="ew")
         self.quality_option = customtkinter.CTkComboBox(
             self.setting,
-            values=("2160p(4k)","1440p(2k)","1080p", "720p", "480p", "360p"),
+            values=("2160p(4k)", "1440p(2k)", "1080p", "720p", "480p", "360p"),
             font=("Roboto mono", 15),
             state="readonly",
             variable=self.ql,
@@ -186,7 +180,7 @@ class setting(Window):
                 else (
                     self.quality_option.configure(state="disabled"),
                     self.ql.set("Mp3 quality"),
-                )
+            )
             ),
         )
         self.type.grid(row=1, column=1, pady=5)
@@ -214,9 +208,7 @@ class change(setting, Window):
     def __init__(self, frame):
         super().__init__(Frame=frame)
 
-        self.background_text= text_animation(self.label)
-
-
+        self.background_text = text_animation(self.label)
 
         customtkinter.CTkButton(
             self.setting,
@@ -241,12 +233,13 @@ class change(setting, Window):
             customtkinter.set_appearance_mode("light")
 
             self.search_icon = customtkinter.CTkImage(
-            PIL.Image.open("Icons/search-interface-symbol_54481.png"), size=(25, 25)
+                PIL.Image.open("Icons/search-interface-symbol_54481.png"), size=(25, 25)
             )
-            
+
         else:
             customtkinter.set_appearance_mode("dark")
-            self.search_icon = customtkinter.CTkImage(PIL.Image.open("Icons/search-interface-symbol-white.png"), size=(25, 25))
+            self.search_icon = customtkinter.CTkImage(PIL.Image.open(
+                "Icons/search-interface-symbol-white.png"), size=(25, 25))
 
         self.button.configure(image=self.search_icon)
 
@@ -254,7 +247,6 @@ class change(setting, Window):
             self.background_text.start()
         else:
 
-       
             self.background_text.stop()
 
 
@@ -263,23 +255,24 @@ class credit(change):
         super().__init__(frame)
         self.notebook.add("Credit")
         self.credit = self.notebook.tab("Credit")
-        
-        credit_frame = customtkinter.CTkScrollableFrame(self.credit, orientation="horizontal")
+
+        credit_frame = customtkinter.CTkScrollableFrame(
+            self.credit, orientation="horizontal")
         credit_frame.pack(fill="both", expand=True)
-        text = customtkinter.CTkTextbox(credit_frame, font=("Roboto mono", 15), width=1920, height=1080)
+        text = customtkinter.CTkTextbox(credit_frame, font=(
+            "Roboto mono", 15), width=1920, height=1080)
         text.pack(fill="both", expand=True)
         with open("Credit.txt", "r") as f:
             text.insert("1.0", f.read())
-        
-def close( frame,a):
-    
-    
-    a.bool=False
-    a.close_win=True
+
+
+def close(frame, a):
+
+    a.bool = False
+    a.close_win = True
 
     a.background_text.stop()
-    frame.destroy() 
-        
+    frame.destroy()
 
 
 root = customtkinter.CTk()
