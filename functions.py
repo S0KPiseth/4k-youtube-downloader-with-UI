@@ -145,14 +145,14 @@ class Download_UI:
                 option = {
                     'progress_hooks': [self.progress_hook],
                     'format': f'bestvideo[height={quality}]+bestaudio/best',
-                    'outtmpl': f'{self.parent.t.get()}\({self.parent.ql.get()})%(title)s.%(ext)s',
+                    'outtmpl': fr'{self.parent.t.get()}\({self.parent.ql.get()})%(title)s.%(ext)s',
                 }
 
             else:
                 option = {
                     'progress_hooks': [self.progress_hook],
                     'format': 'bestaudio/best',
-                    'outtmpl': f'{self.parent.t.get()}\(audio)%(title)s.%(ext)s',
+                    'outtmpl': fr'{self.parent.t.get()}\(audio)%(title)s.%(ext)s',
                 }
             with yt_dlp.YoutubeDL(option) as yld:
 
