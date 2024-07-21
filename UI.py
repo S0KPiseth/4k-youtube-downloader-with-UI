@@ -25,10 +25,7 @@ class Window():
         self.notebook.add("Home")
         self.tab = self.notebook.tab("Home")
 
-        self.frame.call(
-            "source",
-            "C:\\Users\\User\\Desktop\\deskstop icon\\Piseth-SoK\\01 Project\\COSC 121\\4_Assignments\\pdcreator\\Azure\\azure.tcl",
-        )
+       
         self.frame.title("Youtube downloader")
         self.frame.geometry("800x600")
         self.label = customtkinter.CTkLabel(
@@ -274,8 +271,8 @@ def close(frame, a):
     a.background_text.stop()
     frame.destroy()
 
-
 root = customtkinter.CTk()
+
 
 window = credit(root)
 root.protocol("WM_DELETE_WINDOW", lambda: close(root, window))
