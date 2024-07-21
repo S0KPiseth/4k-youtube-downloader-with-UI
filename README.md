@@ -1,4 +1,4 @@
-
+![image](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/hometab.gif)
 # 4K YouTube Downloader with UI
 
 By using this customtkinter GUI application, you can download YouTube videos up to 4K resolution.
