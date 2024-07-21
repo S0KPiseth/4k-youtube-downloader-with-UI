@@ -38,7 +38,7 @@ To install and set up the project, follow these steps:
    - **Windows**: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH.
 
 2. Install VLC
-   - download VLC at [](https://www.videolan.org/vlc/download-windows.html)
+   - download VLC at [videolan.org](https://www.videolan.org/vlc/download-windows.html)
 3. Clone the repository:
     ```bash
     git clone https://github.com/S0KPiseth/4k-youtube-downloader-with-UI.git
