@@ -37,13 +37,15 @@ To install and set up the project, follow these steps:
    - **macOS**: Install using Homebrew (`brew install ffmpeg`).
    - **Windows**: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH.
 
-2. Clone the repository:
+2. Install VLC
+   - download VLC at [videolan.org](https://www.videolan.org/vlc/download-windows.html)
+3. Clone the repository:
     ```bash
     git clone https://github.com/S0KPiseth/4k-youtube-downloader-with-UI.git
     cd 4k-youtube-downloader-with-UI
     ```
 
-3. Run the following command to install the required library:
+4. Run the following command to install the required library:
    
     ```bash
     pip install python-vlc customtkinter Pillow yt-dlp
