@@ -7,11 +7,92 @@ import vlc
 import customtkinter
 import PIL.Image
 import yt_dlp
+import sqlite3
+import uuid
+
+
+def create_database():
+    connection = sqlite3.connect("data/setting.db")
+    cursor = connection.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS user_settings (
+            user_id TEXT NOT NULL,
+            setting_key TEXT NOT NULL,
+            setting_value TEXT NOT NULL,
+            PRIMARY KEY (user_id, setting_key)
+        )
+    ''')
+    connection.commit()
+    connection.close()
+
+
+def get_user_id():
+    name = "userID.txt"
+    if os.path.exists(name):
+        with open(name, "r") as file:
+            id = file.read().strip()
+            if id:
+                return id
+    else:
+        with open(name, "w") as file:
+            id = str(uuid.uuid4())
+            file.write(id)
+            return id
+
+
+def is_table_empty(table_name):
+    connection = sqlite3.connect("data/setting.db")
+    cursor = connection.cursor()
+    cursor.execute(f'SELECT COUNT(*) FROM {table_name}')
+    count = cursor.fetchone()[0]
+    connection.close()
+    return count == 0
+
+
+def default_setting(id, setting_dict):
+    if is_table_empty('user_settings'):
+        connection = sqlite3.connect("data/setting.db")
+        cursor = connection.cursor()
+        cursor.executemany('''
+            INSERT INTO user_settings (user_id, setting_key, setting_value)
+            VALUES (?, ?, ?)
+        ''', [(id, key, value) for key, value in setting_dict.items()])
+        connection.commit()
+        connection.close()
+
+
+def update_setting(id, setting_dict):
+    connection = sqlite3.connect("data/setting.db")
+    cursor = connection.cursor()
+    for key, value in setting_dict.items():
+        cursor.execute('''
+            UPDATE user_settings
+            SET setting_value = ?
+            WHERE user_id = ? AND setting_key = ?
+        ''', (value, id, key))
+    connection.commit()
+    connection.close()
+
+
+def get_setting(id, setting_key):
+    connection = sqlite3.connect("data/setting.db")
+    cursor = connection.cursor()
+    cursor.execute('''
+        SELECT setting_value FROM user_settings
+        WHERE user_id = ? AND setting_key = ?
+    ''', (id, setting_key))
+    value = cursor.fetchone()
+    connection.close()
+    return value[0] if value else None
+
+
 download_icon_con = False
 download_icon = customtkinter.CTkImage(
-    PIL.Image.open("Icons/download_icon.png"), size=(20, 20))
+    PIL.Image.open("Icons/download_icon.png"), size=(20, 20)
+)
 download_icon_light = customtkinter.CTkImage(
-    PIL.Image.open("Icons/download_icon_light.png"), size=(20, 20))
+    PIL.Image.open("Icons/download_icon_light.png"), size=(20, 20)
+)
 total_mb = 0
 
 
@@ -21,7 +102,7 @@ class text_animation:
         self.label = label
         self.bool = True
         self.value = "Download\nYoutube video\nfor free..."
-        self.close_win = False
+
         self.animation = threading.Thread(target=self.skeleton, daemon=True)
         self.animation.start()
 
@@ -60,8 +141,7 @@ class text_animation:
 
         if self.bool:
             self.bool = False
-            if not self.close_win:
-                self.label.configure(text=self.value)
+            self.label.configure(text=self.value)
 
     def start(self):
         if not self.bool:
@@ -77,7 +157,7 @@ def type(b):
 
 class Download_UI:
     def __init__(self, parent, video_url, pv_frame):
-
+        self.id = get_user_id()
         pv_frame.player.stop()
         pv_frame.root.destroy()
 
@@ -86,14 +166,12 @@ class Download_UI:
 
         self.cancel = False
 
-        self.download_frame = customtkinter.CTkFrame(self.parent.tab,
-                                                     fg_color=(
-                                                         "white", "black"),
-                                                     height=80,
-                                                     width=400)
+        self.download_frame = customtkinter.CTkFrame(
+            self.parent.tab, fg_color=("white", "black"), height=80, width=400
+        )
         self.download_frame.place(relx=1, rely=0.08, anchor="e")
 
-        self.size = customtkinter.CTkLabel(self.download_frame, text=' / ')
+        self.size = customtkinter.CTkLabel(self.download_frame, text=" / ")
         self.size.grid(row=1, column=1)
 
         self.download_label = customtkinter.CTkLabel(
@@ -106,10 +184,9 @@ class Download_UI:
         icon_download = customtkinter.CTkLabel(
             self.download_frame,
             text="",
-
         )
         icon_download.grid(row=1, column=0)
-        if self.parent.x.get() == "Light":
+        if get_setting(self.id, "theme") == "Light":
             icon_download.configure(image=download_icon)
         else:
             icon_download.configure(image=download_icon_light)
@@ -118,41 +195,46 @@ class Download_UI:
             self.download_frame, width=200)
         self.progressBar.grid(row=1, column=2)
         self.progressBar.set(0)
-        self.percent = customtkinter.CTkLabel(self.download_frame, text=' % ')
+        self.percent = customtkinter.CTkLabel(self.download_frame, text=" % ")
         self.percent.grid(row=1, column=3)
 
         # cancel button
-        customtkinter.CTkButton(self.download_frame, text=" X ",
-                                font=('', 15, 'bold'),
-                                width=15,
-                                fg_color=("white", "black"),
-                                hover_color=("#808080"),
-                                text_color=("black", "white"),
-                                command=self.cancel_download
-                                ).grid(row=1, column=4)
+        customtkinter.CTkButton(
+            self.download_frame,
+            text=" X ",
+            font=("", 15, "bold"),
+            width=15,
+            fg_color=("white", "black"),
+            hover_color=("#808080"),
+            text_color=("black", "white"),
+            command=self.cancel_download,
+        ).grid(row=1, column=4)
 
         threading.Thread(target=self.download).start()
 
     def download(self):
         try:
-            quality = self.parent.ql.get().strip("p")
-            if quality[0] == '2':
+            ql_data = get_setting(self.id, "ql")
+            location = get_setting(self.id, "location")
+            quality = ql_data.strip("p")
+            if quality[0] == "2":
                 quality = 2160
-            if self.parent.ql.get() == "1440p(2k)":
+            if ql_data == "1440p(2k)":
                 quality = 1440
 
-            if self.parent.ex.get() == "Mp4":
+            if get_setting(self.id, "type") == "Mp4":
+
                 option = {
-                    'progress_hooks': [self.progress_hook],
-                    'format': f'bestvideo[height={quality}]+bestaudio/best',
-                    'outtmpl': fr'{self.parent.t.get()}\({self.parent.ql.get()})%(title)s.%(ext)s',
+                    "progress_hooks": [self.progress_hook],
+                    "format": f"bestvideo[height={quality}]+bestaudio/best",
+                    "outtmpl": rf"{location}\({ql_data})%(title)s.%(ext)s",
                 }
 
             else:
                 option = {
-                    'progress_hooks': [self.progress_hook],
-                    'format': 'bestaudio/best',
-                    'outtmpl': fr'{self.parent.t.get()}\(audio)%(title)s.%(ext)s',
+                    "progress_hooks": [self.progress_hook],
+                    "format": "bestaudio/best",
+                    "outtmpl": rf"{location}\(audio)%(title)s.%(ext)s",
                 }
             with yt_dlp.YoutubeDL(option) as yld:
 
@@ -160,7 +242,9 @@ class Download_UI:
                 filename = yld.prepare_filename(infos)
 
                 messagebox.showinfo(
-                    "Download Complete", f'Your video was downloaded successfully at {filename}')
+                    "Download Complete",
+                    f"Your video was downloaded successfully at {filename}",
+                )
 
             current_time = time.time()
             os.utime(filename, (current_time, current_time))
@@ -174,13 +258,13 @@ class Download_UI:
 
         global total_mb
         if self.cancel:
-            raise Exception('Download Cancelled')
+            raise Exception("Download Cancelled")
 
-        if d['status'] == 'downloading':
-            total_bytes = d.get('total_bytes')
-            downloaded_bytes = d.get('downloaded_bytes')
-            downloaded_mb = int(downloaded_bytes/1000000)
-            total_mb = int(total_bytes/1000000)
+        if d["status"] == "downloading":
+            total_bytes = d.get("total_bytes")
+            downloaded_bytes = d.get("downloaded_bytes")
+            downloaded_mb = int(downloaded_bytes / 1000000)
+            total_mb = int(total_bytes / 1000000)
 
             if total_bytes is not None and downloaded_bytes is not None:
                 progress = int(downloaded_bytes / total_bytes * 100)
@@ -188,10 +272,10 @@ class Download_UI:
                 self.size.configure(text=f" {downloaded_mb}/{total_mb} MB ")
                 self.percent.configure(text=f" {progress}% ")
 
-                self.progressBar.set(progress/100)
+                self.progressBar.set(progress / 100)
                 self.parent.frame.update_idletasks()
 
-        elif d['status'] == 'finished':
+        elif d["status"] == "finished":
 
             self.progressBar.set(1)
             self.parent.frame.update_idletasks()
@@ -207,8 +291,9 @@ def search(c):
     threading.Thread(target=Search, args=(c,)).start()
 
 
-class Search():
+class Search:
     def __init__(self, c):
+        self.id = get_user_id()
         video_url = c.entry.get()
         player_url = link(video_url)
         if player_url:
@@ -227,7 +312,7 @@ class Search():
             self.player.set_hwnd(self.video_frame.winfo_id())
 
             self.player.play()
-            if c.x.get() == 'Light':
+            if get_setting(self.id, "theme") == "Light":
 
                 self.play = customtkinter.CTkImage(
                     PIL.Image.open("Icons/play-button_724963.png"), size=(20, 20)
@@ -236,8 +321,9 @@ class Search():
                     PIL.Image.open("Icons/pause _icon.png"), size=(20, 20)
                 )
             else:
-                self.play = customtkinter.CTkImage(PIL.Image.open(
-                    "Icons/play-button-White.png"), size=(20, 20))
+                self.play = customtkinter.CTkImage(
+                    PIL.Image.open("Icons/play-button-White.png"), size=(20, 20)
+                )
                 self.pause_icon = customtkinter.CTkImage(
                     PIL.Image.open("Icons/pause _icon_white.png"), size=(20, 20)
                 )
@@ -254,13 +340,16 @@ class Search():
             download_button = customtkinter.CTkButton(
                 self.root,
                 text="Download",
-                image=(download_icon if c.x.get() ==
-                       "Light" else download_icon_light),
+                image=(
+                    download_icon
+                    if get_setting(self.id, "theme") == "Light"
+                    else download_icon_light
+                ),
                 compound="left",
                 font=("Roboto mono", 15),
                 fg_color=("#D3D3D3", "#2d2d2d"),
                 hover_color=("white", "#383838"),
-                text_color=("black", 'white'),
+                text_color=("black", "white"),
                 command=lambda: Download(c, video_url, self),
             ).pack(pady=5)
             null = customtkinter.CTkLabel(
@@ -283,10 +372,7 @@ class Search():
 
 
 def link(url):
-    option = {
-
-        "format": 'best'
-    }
+    option = {"format": "best"}
 
     with yt_dlp.YoutubeDL(option) as ydl:
         try:

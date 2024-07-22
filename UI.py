@@ -1,22 +1,25 @@
 from functions import *
 
+default_path = os.path.join(os.path.expanduser("~"), "Downloads")
 
-class Window():
+
+class Window:
     def __init__(self, frame):
+        create_database()
+        self.id = get_user_id()
+
         customtkinter.set_appearance_mode("light")
-
         self.frame = frame
-
         font = ("Roboto mono", 15)
         self.notebook = customtkinter.CTkTabview(
-            self.frame, fg_color=("#EBEBEB", "#242424"),
+            self.frame,
+            fg_color=("#EBEBEB", "#242424"),
             text_color=("#242424", "#EBEBEB"),
             segmented_button_fg_color=("#EBEBEB", "#242424"),
             segmented_button_selected_color=("#EBEBEB", "#242424"),
             segmented_button_selected_hover_color=("#EBEBEB", "#242424"),
             segmented_button_unselected_color=("#EBEBEB", "#242424"),
             segmented_button_unselected_hover_color=("#EBEBEB", "#242424"),
-
         )
 
         self.notebook.pack(fill="both", expand=True)
@@ -25,7 +28,6 @@ class Window():
         self.notebook.add("Home")
         self.tab = self.notebook.tab("Home")
 
-       
         self.frame.title("Youtube downloader")
         self.frame.geometry("800x600")
         self.label = customtkinter.CTkLabel(
@@ -57,9 +59,13 @@ class Window():
 
         self.entry.bind("<Return>", lambda event: search(self))
 
-        customtkinter.CTkLabel(self.tab,
-                               text=None,
-                               image=customtkinter.CTkImage(PIL.Image.open("Icons/sticker1.png"), size=(350, 200))).place(relx=1, rely=0.35, anchor="e")
+        customtkinter.CTkLabel(
+            self.tab,
+            text=None,
+            image=customtkinter.CTkImage(
+                PIL.Image.open("Icons/sticker1.png"), size=(350, 200)
+            ),
+        ).place(relx=1, rely=0.35, anchor="e")
 
 
 class setting(Window):
@@ -74,11 +80,20 @@ class setting(Window):
         self.animate = StringVar()
 
         # default value
-        self.ex.set("Mp4")
-        self.x.set("Light")
-        self.ql.set("720p")
-        self.t.set(r"C:\Users\User\Downloads")
-        self.animate.set("Enable")
+
+        setting_dict = {
+            "type": "Mp4",
+            "theme": "Light",
+            "ql": "720p",
+            "location": str(default_path),
+            "text": "Enable",
+        }
+        default_setting(self.id, setting_dict=setting_dict)
+        self.ex.set(get_setting(self.id, "type"))
+        self.x.set(get_setting(self.id, "theme"))
+        self.ql.set(get_setting(self.id, "ql"))
+        self.t.set(get_setting(self.id, "location"))
+        self.animate.set(get_setting(self.id, "text"))
 
         self.notebook.add("Setting")
         self.setting = self.notebook.tab("Setting")
@@ -170,14 +185,13 @@ class setting(Window):
             font=("Roboto mono", 15),
             state="readonly",
             variable=self.ex,
-            command=lambda e: ((
-                self.quality_option.configure(state="readonly"),
-                self.ql.set("720p"))
+            command=lambda e: (
+                (self.quality_option.configure(state="readonly"), self.ql.set("720p"))
                 if self.ex.get() == "Mp4"
                 else (
                     self.quality_option.configure(state="disabled"),
                     self.ql.set("Mp3 quality"),
-            )
+                )
             ),
         )
         self.type.grid(row=1, column=1, pady=5)
@@ -193,7 +207,11 @@ class setting(Window):
         for i in option:
             place += 1
             self.theme_option = customtkinter.CTkRadioButton(
-                self.setting, text=i, font=("Roboto mono", 15), value=i, variable=self.animate
+                self.setting,
+                text=i,
+                font=("Roboto mono", 15),
+                value=i,
+                variable=self.animate,
             )
             self.theme_option.grid(row=5, column=place, pady=20)
 
@@ -225,8 +243,18 @@ class change(setting, Window):
         ).grid(row=6, column=3)
 
     def apply(self):
+        # update setting
+
+        setting_dict = {
+            "type": self.ex.get(),
+            "theme": self.x.get(),
+            "ql": self.ql.get(),
+            "location": self.t.get(),
+            "text": self.animate.get(),
+        }
+        update_setting(self.id, setting_dict=setting_dict)
         # theme
-        if self.x.get() == "Light":
+        if get_setting(self.id, "theme") == "Light":
             customtkinter.set_appearance_mode("light")
 
             self.search_icon = customtkinter.CTkImage(
@@ -235,12 +263,13 @@ class change(setting, Window):
 
         else:
             customtkinter.set_appearance_mode("dark")
-            self.search_icon = customtkinter.CTkImage(PIL.Image.open(
-                "Icons/search-interface-symbol-white.png"), size=(25, 25))
+            self.search_icon = customtkinter.CTkImage(
+                PIL.Image.open("Icons/search-interface-symbol-white.png"), size=(25, 25)
+            )
 
         self.button.configure(image=self.search_icon)
 
-        if self.animate.get() == "Enable":
+        if get_setting(self.id, "text") == "Enable":
             self.background_text.start()
         else:
 
@@ -254,10 +283,12 @@ class credit(change):
         self.credit = self.notebook.tab("Credit")
 
         credit_frame = customtkinter.CTkScrollableFrame(
-            self.credit, orientation="horizontal")
+            self.credit, orientation="horizontal"
+        )
         credit_frame.pack(fill="both", expand=True)
-        text = customtkinter.CTkTextbox(credit_frame, font=(
-            "Roboto mono", 15), width=1920, height=1080)
+        text = customtkinter.CTkTextbox(
+            credit_frame, font=("Roboto mono", 15), width=1920, height=1080
+        )
         text.pack(fill="both", expand=True)
         with open("Credit.txt", "r") as f:
             text.insert("1.0", f.read())
@@ -266,15 +297,17 @@ class credit(change):
 def close(frame, a):
 
     a.bool = False
-    a.close_win = True
-
     a.background_text.stop()
+
     frame.destroy()
+
 
 root = customtkinter.CTk()
 
 
 window = credit(root)
+window.apply()
+
 root.protocol("WM_DELETE_WINDOW", lambda: close(root, window))
 root.resizable(False, False)
 
