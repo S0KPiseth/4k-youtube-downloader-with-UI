@@ -92,7 +92,7 @@ After clicking the download button, it will pop up a new frame on the home tab t
 
 ### Option 2: Running from the Executable File
 
-1. **Download the executable file from the [releases page](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/releases/tag/v1.1).**
+1. **Download the executable file from the [releases page](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/releases/tag/v1.1.1).**
 
 2. **Install VLC Media Player:**
     - Download and install VLC from [here](https://www.videolan.org/vlc/index.html).
