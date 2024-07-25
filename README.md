@@ -27,7 +27,6 @@ After clicking the download button, it will pop up a new frame on the home tab t
     <img src="https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/download.png" alt="Download Process" width="600" />
 </a>
 
-
 ## Installing
 
 ### Prerequisites
