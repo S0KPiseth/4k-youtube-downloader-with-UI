@@ -294,66 +294,71 @@ def search(c):
 class Search:
     def __init__(self, c):
         self.id = get_user_id()
+        self.root = customtkinter.CTkToplevel()
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.root.after(10, self.root.lift)
+        self.root.title("Preview Video")
+        self.root.geometry("600x400")
+
+        self.is_playing = True
+        self.video_frame = customtkinter.CTkFrame(self.root)
+        self.video_frame.pack(fill="both", expand=True)
+
+        if get_setting(self.id, "theme") == "Light":
+
+            self.play = customtkinter.CTkImage(
+                PIL.Image.open("Icons/play-button_724963.png"), size=(20, 20)
+            )
+            self.pause_icon = customtkinter.CTkImage(
+                PIL.Image.open("Icons/pause _icon.png"), size=(20, 20)
+            )
+        else:
+            self.play = customtkinter.CTkImage(
+                PIL.Image.open("Icons/play-button-White.png"), size=(20, 20)
+            )
+            self.pause_icon = customtkinter.CTkImage(
+                PIL.Image.open("Icons/pause _icon_white.png"), size=(20, 20)
+            )
+        self.play_pause_button = customtkinter.CTkButton(
+            self.root,
+            text=None,
+            image=self.pause_icon,
+            fg_color=("#ebebeb", "#242424"),
+            hover_color=("#ebebeb", "#242424"),
+            state = DISABLED,
+            command=self.stop_video,
+        )
+        self.play_pause_button.pack()
+
+        download_button = customtkinter.CTkButton(
+            self.root,
+            text="Download",
+            image=(
+                download_icon
+                if get_setting(self.id, "theme") == "Light"
+                else download_icon_light
+            ),
+            compound="left",
+            font=("Roboto mono", 15),
+            fg_color=("#D3D3D3", "#2d2d2d"),
+            hover_color=("white", "#383838"),
+            text_color=("black", "white"),
+            state = DISABLED,
+            command=lambda: Download(c, video_url, self),
+        )
+        download_button.pack(pady=5)
+        null = customtkinter.CTkLabel(
+            self.root, text=" ", height=10).pack()
+
         video_url = c.entry.get()
         player_url = link(video_url)
         if player_url:
-
-            self.root = customtkinter.CTkToplevel()
-            self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
-            self.root.after(10, self.root.lift)
-            self.root.title("Preview Video")
-            self.root.geometry("600x400")
-
-            self.is_playing = True
-            self.video_frame = customtkinter.CTkFrame(self.root)
-            self.video_frame.pack(fill="both", expand=True)
-
             self.player = vlc.MediaPlayer(player_url)
+
             self.player.set_hwnd(self.video_frame.winfo_id())
-
             self.player.play()
-            if get_setting(self.id, "theme") == "Light":
-
-                self.play = customtkinter.CTkImage(
-                    PIL.Image.open("Icons/play-button_724963.png"), size=(20, 20)
-                )
-                self.pause_icon = customtkinter.CTkImage(
-                    PIL.Image.open("Icons/pause _icon.png"), size=(20, 20)
-                )
-            else:
-                self.play = customtkinter.CTkImage(
-                    PIL.Image.open("Icons/play-button-White.png"), size=(20, 20)
-                )
-                self.pause_icon = customtkinter.CTkImage(
-                    PIL.Image.open("Icons/pause _icon_white.png"), size=(20, 20)
-                )
-            self.play_pause_button = customtkinter.CTkButton(
-                self.root,
-                text=None,
-                image=self.pause_icon,
-                fg_color=("#ebebeb", "#242424"),
-                hover_color=("#ebebeb", "#242424"),
-                command=self.stop_video,
-            )
-            self.play_pause_button.pack()
-
-            download_button = customtkinter.CTkButton(
-                self.root,
-                text="Download",
-                image=(
-                    download_icon
-                    if get_setting(self.id, "theme") == "Light"
-                    else download_icon_light
-                ),
-                compound="left",
-                font=("Roboto mono", 15),
-                fg_color=("#D3D3D3", "#2d2d2d"),
-                hover_color=("white", "#383838"),
-                text_color=("black", "white"),
-                command=lambda: Download(c, video_url, self),
-            ).pack(pady=5)
-            null = customtkinter.CTkLabel(
-                self.root, text=" ", height=10).pack()
+            self.play_pause_button.configure(state = NORMAL)
+            download_button.configure(state = NORMAL)
 
     def stop_video(self):
         if self.is_playing:
