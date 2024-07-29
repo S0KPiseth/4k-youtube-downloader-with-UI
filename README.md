@@ -27,33 +27,105 @@ After clicking the download button, it will pop up a new frame on the home tab t
     <img src="https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/blob/main/Screenshots/download.png" alt="Download Process" width="600" />
 </a>
 
+## Installing
 
-## Installation
+### Prerequisites
 
-To install and set up the project, follow these steps:
+- Windows operating system
+- [VLC Media Player](https://www.videolan.org/vlc/index.html)
+- [FFmpeg](https://ffmpeg.org/download.html) (added to the system path)
 
-1. Install ffmpeg:
-   - **Linux**: Install via package manager (e.g., `apt-get install ffmpeg` on Debian-based systems).
-   - **macOS**: Install using Homebrew (`brew install ffmpeg`).
-   - **Windows**: Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH.
+### Option 1: Running from the Python Code
 
-2. Install VLC
-   - download VLC at [videolan.org](https://www.videolan.org/vlc/download-windows.html)
-3. Clone the repository:
-    ```bash
-    git clone https://github.com/S0KPiseth/4k-youtube-downloader-with-UI.git
+#### Prerequisites
+
+- Python 3.7 or higher
+- pip (Python package installer)
+
+#### Installation Steps
+
+1. **Install VLC Media Player:**
+    - Download and install VLC from [here](https://www.videolan.org/vlc/index.html).
+
+2. **Install FFmpeg:**
+    - Download the appropriate version for Windows from [here](https://ffmpeg.org/download.html).
+    - Extract the downloaded zip file to a location of your choice, e.g., `C:\ffmpeg`.
+
+3. **Add FFmpeg to the System Path:**
+    - Open the Start Menu and search for "Environment Variables".
+    - Click on "Edit the system environment variables".
+    - In the System Properties window, click on the "Environment Variables" button.
+    - In the Environment Variables window, find the `Path` variable under System variables and select it, then click "Edit".
+    - Click "New" and add the path to the `bin` folder inside your FFmpeg directory, e.g., `C:\ffmpeg\bin`.
+    - Click "OK" to close all windows.
+
+4. **Clone the repository:**
+    ```sh
+    https://github.com/S0KPiseth/4k-youtube-downloader-with-UI.git
     cd 4k-youtube-downloader-with-UI
     ```
 
-4. Run the following command to install the required library:
-   
-    ```bash
+5. **Create a virtual environment:**
+    ```sh
+    python -m venv venv
+    ```
+
+6. **Activate the virtual environment:**
+    - On Windows:
+      ```sh
+      venv\Scripts\activate
+      ```
+    - On macOS/Linux:
+      ```sh
+      source venv/bin/activate
+      ```
+
+7. **Install the required dependencies using pip:**
+    ```sh
     pip install python-vlc customtkinter Pillow yt-dlp
     ```
-## Usage
+8. **Run the application:**
+    ```sh
+    python UI.py
+    ```
 
-After finishing the installation step, to use this application, run the following command:
-```bash
-python UI.py
-```
-Or run UI.py file directly from your IDE
+### Option 2: Running from the Executable File
+
+1. **Download the executable file from the [releases page](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/releases/tag/v1.1.1).**
+
+2. **Install VLC Media Player:**
+    - Download and install VLC from [here](https://www.videolan.org/vlc/index.html).
+
+3. **Install FFmpeg:**
+    - Download the appropriate version for Windows from [here](https://ffmpeg.org/download.html).
+    - Extract the downloaded zip file to a location of your choice, e.g., `C:\ffmpeg`.
+
+4. **Add FFmpeg to the System Path:**
+    - Open the Start Menu and search for "Environment Variables".
+    - Click on "Edit the system environment variables".
+    - In the System Properties window, click on the "Environment Variables" button.
+    - In the Environment Variables window, find the `Path` variable under System variables and select it, then click "Edit".
+    - Click "New" and add the path to the `bin` folder inside your FFmpeg directory, e.g., `C:\ffmpeg\bin`.
+    - Click "OK" to close all windows.
+
+5. **Run the executable file:**
+    - Locate the downloaded `.exe` file.
+    - Double-click the `.exe` file to run the installer.
+    - Follow the on-screen instructions to complete the installation.
+    - After installation, you can launch the application from the Start menu or the desktop shortcut.
+## How to Contribute
+
+We welcome contributions to this project! Here are some ways you can contribute:
+
+### Reporting Bugs
+
+If you find a bug, please report it by opening an issue on the [GitHub issues page](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/issues). Please include details about the bug, including steps to reproduce it and any relevant log messages.
+
+### Suggesting Features
+
+Have an idea for a new feature? We would love to hear about it! Open an issue on the [GitHub issues page](https://github.com/S0KPiseth/4k-youtube-downloader-with-UI/issues) and describe your idea.
+
+### Submitting Pull Requests
+
+To contribute code, fork the repository, create a new branch, make your changes, and open a pull request. 
+
