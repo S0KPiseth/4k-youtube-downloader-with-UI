@@ -303,7 +303,7 @@ def close(frame, a):
 
 
 root = customtkinter.CTk()
-
+root.iconbitmap("Screenshots\icon.ico")
 
 window = credit(root)
 window.apply()
