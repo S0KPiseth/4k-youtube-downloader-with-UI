@@ -106,22 +106,6 @@ class text_animation:
         self.animation = threading.Thread(target=self.skeleton, daemon=True)
         self.animation.start()
 
-    def skeleton1(self):
-
-        i = 0
-        while True:
-
-            self.label.configure(text=f"{i}")
-            time.sleep(0.2)
-
-            i += 1
-            if i == 10:
-                self.label.configure(text="")
-                i = 0
-            if self.bool == False:
-                break
-        raise SystemExit()
-
     def skeleton(self):
 
         i = 0
