@@ -3,7 +3,7 @@ Credits:
 This application was developed using the following libraries and tools:
 - 'customtkinter' and 'tkinter' for GUI framework and custom themed tkinter widget.
 - 'yt-dlp' for YouTube video downloading.
-- 'threading' for background tasks
+- 'threading' for background tasks.
 - 'vlc' for streaming preview video.
 - 'PIL' (Python Imaging Library) for image handling.
 - 'os' 
